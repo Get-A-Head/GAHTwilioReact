@@ -39,15 +39,16 @@ ReactDOM.render(
         <AppStateProvider>
           <Switch>
             <PrivateRoute exact path="/">
-              <VideoApp />
+              <VideoApp key={Date.now()} />
             </PrivateRoute>
-            <PrivateRoute path="/room/:URLRoomName">
-              <VideoApp />
+            {/* <PrivateRoute path="/room/:URLRoomName"> */}
+            <PrivateRoute path={process.env.APP_INTERACTION_ROUTE_BASE}>
+              <VideoApp key={Date.now()} />
             </PrivateRoute>
-            <Route path="/login">
+            {/* <Route path="/login">
               <LoginPage />
             </Route>
-            <Redirect to="/" />
+            <Redirect to="/" /> */}
           </Switch>
         </AppStateProvider>
       </Router>
