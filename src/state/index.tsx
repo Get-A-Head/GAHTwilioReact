@@ -6,13 +6,13 @@ import useActiveSinkId from './useActiveSinkId/useActiveSinkId';
 import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 import { User } from 'firebase';
-
-//Start: Arnold 20220405
+import 'dotenv/config';
+//Start: Arnold 20220504
 // ?
-import { AVATest } from 'https://github.com/Get-A-Head/microservices/blob/master/tests/ava/Auth/v2.1-calinst.js'
+// import { AVATest } from 'https://github.com/Get-A-Head/microservices/blob/master/tests/ava/Auth/v2.1-calinst.js'
 //Usage: CreateCalInst(AvaTest.context)
-import { CreateCalInst } from '../GAH'
-//End: Arnold 20220405
+import { CreateCalInst, CalInst } from '../GAH';
+//End: Arnold 20220504
 
 export interface StateContextType {
   error: TwilioError | Error | null;
@@ -147,6 +147,9 @@ export default function AppStateProvider(props: React.PropsWithChildren<{}>) {
       });
   };
 
+  // Testing: Arnold 20220504
+  console.log('Display Token please!!!', getToken);
+  CalInst('8264ed83-9d26-4cae-aa8f-1d0ecc1d6508');
   return (
     <StateContext.Provider value={{ ...contextValue, getToken, updateRecordingRules }}>
       {props.children}

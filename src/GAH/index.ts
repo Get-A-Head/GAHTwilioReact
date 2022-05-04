@@ -1,5 +1,4 @@
-import CreateCalInst from "./CreateCalInst"
+import CreateCalInst from './CreateCalInst';
+import CalInst from './CalInst';
 
-export {
-  CreateCalInst
-}
+export { CreateCalInst, CalInst };
