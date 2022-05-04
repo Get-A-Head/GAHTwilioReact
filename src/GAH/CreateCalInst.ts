@@ -8,6 +8,16 @@ let counselorCalinst:any
 let clientRequestCalinst:any
 let counselorApprovedCalinst:any
 
+let server=process.env?.SERVER ?? 'https://v2.dev.geta-head.com'
+let apipath=process.env?.API_PATH ?? '/api/v1'
+let setNearAvailUrl= `${server}${apipath}/meeting/calinst/create`
+let getCounselorUrl = `${server}${apipath}/me/client/counselor`
+let reserveUrlBase = `${server}${apipath}/meeting/calinst/reserve/id/`
+
+let counselorUserid= process.env?.GAH_COUNSELOR_EMAIL ?? 'arnoldcou@mailinator.com';
+let clientUserId = process.env?.GAH_CLIENT_EMAIL ?? 'arnoldclient1@mailinator.com';
+let testPassword = process.env?.GAH_TESTPASSWORD ?? 'PassWord1!';
+
 export default async (context:any) => {
   //Create an availability on the client
   const openslotStart = moment().add(3,'hour').startOf('hour')
@@ -20,13 +30,26 @@ export default async (context:any) => {
   }
 
   //STEP 1: Create the availability as the testCounselor
-  const setNearAvailUrl = `${context.extmsMeetingUrl}/calinst/create`;
-  const createAvailResponse = await axios.post(setNearAvailUrl, { calInst })
-    .then(res => res)
+  //const setNearAvailUrl = `${context.extmsMeetingUrl}/calinst/create`;
+  const createAvailResponse = await axios({
+    method: 'post',
+    url: setNearAvailUrl,
+    auth: {
+      username: counselorUserid,
+      password: testPassword
+    },
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    data: calInst
+  });
+  //const createAvailResponse = await axios.post(setNearAvailUrl, { calInst })
   console.log('Create response: %d', createAvailResponse.status)
-  
+
+  /*
+
   if ( createAvailResponse.status == 201 ) {
-    counselorCalinst = await createAvailResponse
+    counselorCalinst = createAvailResponse
     console.log('Counselor availability created %O', counselorCalinst)
   } else return createAvailResponse.status
 
@@ -35,7 +58,6 @@ export default async (context:any) => {
   //STEP 2: Now as client look for a meeting availability starting in two hours, and ending in 3.
 
   //call getMyCounselors
-  const getCounselorUrl = `${context.extmsMeUrl}/client/counselor`
   const getCounselorResponse = await axios.get(getCounselorUrl, {
       headers: context.testClientHeaders
     })
@@ -67,11 +89,11 @@ export default async (context:any) => {
   //STEP 3- We found an available slot - Make a reservation request for this timeframe.
   const targetAvailability = counselorAvailabilityRecs[0] 
   if ( targetAvailability.calinst_user_guid,context.testCounselorGuid == null ) return false
-  const reserveUrl = `${context.extmsMeetingUrl}/calinst/reserve/id/${targetAvailability.calinst_guid}`
   const patchObj = {
       calinst_subject: 'This is the subject of the meeting',
       calinst_body: 'This is some detail about the meeting'
     }
+  let reserveUrl= `${reserveUrlBase}/${targetAvaialability.calinst_guid}`;
   const patchResponse = await axios.patch(reserveUrl, {
       headers: context.testClientHeaders,
       body: JSON.stringify(patchObj)
@@ -94,4 +116,5 @@ export default async (context:any) => {
   counselorApprovedCalinst = await approvePendingResponse
   console.log('Approved object:%O',counselorApprovedCalinst)
   if ( counselorApprovedCalinst.calinst_client_guid,context.testClientGuid == null ) return counselorApprovedCalinst.calinst_client_guid,context.testClientGuid
+  */
 }
