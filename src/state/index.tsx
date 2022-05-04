@@ -7,6 +7,13 @@ import useFirebaseAuth from './useFirebaseAuth/useFirebaseAuth';
 import usePasscodeAuth from './usePasscodeAuth/usePasscodeAuth';
 import { User } from 'firebase';
 
+//Start: Arnold 20220405
+// ?
+import { AVATest } from 'https://github.com/Get-A-Head/microservices/blob/master/tests/ava/Auth/v2.1-calinst.js'
+//Usage: CreateCalInst(AvaTest.context)
+import { CreateCalInst } from '../GAH'
+//End: Arnold 20220405
+
 export interface StateContextType {
   error: TwilioError | Error | null;
   setError(error: TwilioError | Error | null): void;
